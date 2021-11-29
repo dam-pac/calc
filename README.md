@@ -4,13 +4,13 @@
 Этот репозиторий был создан исключительно для скачивания с него файлов через git.
 Если вы очень хотите испробывать бесполезную программу, то можете его скачать.
 # Запуск
-Для запуска необходимы библиотеки, это:    
-Colorama - pip install colorama    
-Wave - pip install wave    
-Playsound - pip install playsound    
-Asciimatics - pip install asciimatics    
+Для запуска **необходимы библиотеки**, это:    
++ Colorama - pip install colorama    
++ Wave - pip install wave    
++ Playsound - pip install playsound    
++ Asciimatics - pip install asciimatics    
 Вы можете их установить, скачав файл requirements.txt. После скачивания файла необходимо в командной строке написать:    
 ```bash
 pip install -r requirements.txt    
 ```    
-Файл start.wav должен находится в той директории, где находится сам файл калькулятора, иначе калькулятор не запустится.    
+Файл start.wav **должен** находится в той директории, где находится сам файл калькулятора, иначе калькулятор не запустится.    
