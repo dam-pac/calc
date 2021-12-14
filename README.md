@@ -10,8 +10,13 @@
 + Wave - pip install wave    
 + Playsound - pip install playsound    
 + Asciimatics - pip install asciimatics    
-Вы можете их установить, скачав файл requirements.txt. После скачивания файла необходимо в командной строке написать:    
++ Requests - pip install requests    
+Вы можете их установить, скачав файл install.py. После скачивания файла необходимо в командной строке написать для linux:    
 ```bash
-pip install -r requirements.txt    
+python3 install.py    
 ```    
+Для Windows:    
+```bash
+install.py
+```
 Файл start.wav **должен** находится в той директории, где находится сам файл калькулятора, иначе калькулятор не запустится.    
