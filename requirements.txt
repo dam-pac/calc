@@ -1,4 +1,0 @@
-colorama
-wave
-playsound
-asciimatics
