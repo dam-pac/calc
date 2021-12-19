@@ -11,6 +11,7 @@
 + Playsound - pip install playsound    
 + Asciimatics - pip install asciimatics    
 + Requests - pip install requests    
++ Keyboard - pip install keyboard
 Вы можете их установить, скачав файл install.py. После скачивания файла необходимо в командной строке написать для linux:    
 ```bash
 python3 install.py    
