@@ -1,9 +1,0 @@
-colorama
-wave
-playsound
-asciimatics
-requests
-itertools
-datetime
-threading
-keyboard
