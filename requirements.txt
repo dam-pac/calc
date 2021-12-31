@@ -1,5 +1,4 @@
 colorama
-wave
 asciimatics
 requests
 datetime
