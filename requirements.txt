@@ -1,6 +1,5 @@
 colorama
 wave
-playsound
 asciimatics
 requests
 datetime
