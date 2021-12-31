@@ -11,7 +11,7 @@
 + Requests - pip install requests    
 + Keyboard - pip install keyboard
 + Datetime - pip install datetime
-+ Pyglet - pip install pyglet
++ Pyglet - pip install pyglet    
 Вы можете их установить, скачав файл install.py. После скачивания файла необходимо в командной строке написать для linux:    
 ```bash
 python3 install.py    
