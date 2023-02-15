@@ -1,4 +1,11 @@
 ver = ('0.95')
+import pygame
+print('Init...')
+pygame.init()
+pygame.mixer.music.load('f85988897063659.mp3')
+pygame.mixer.music.play(-1)
+print('Welcome to Calc Installer!')
+input('PRESS_ENTER...')
 upd = input('Do you want to check for updates? (yes/no): ')
 if upd == 'yes':
     import os
@@ -133,5 +140,6 @@ except FileNotFoundError:
 print('Install ended! Start calc.py')
 os.system(rm + ' install.py')
 os.system(cls)
+pygame.mixer.music.stop()
 os.system(pstart)
 exit()
