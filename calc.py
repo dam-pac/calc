@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 # Первый запуск
+import time
+time_start = time.time()
 try:
     f = open('config-url.txt')
     f.close()
@@ -30,7 +32,7 @@ f.close()
 # Проверка файлов
 py1 = '/english.py'
 py2 = '/russian.py'
-py3 = '/start.wav'
+py3 = '/startup.mp3'
 py4 = '/calc.py'
 py5 = '/shutdown.mp3'
 py6 = '/requirements.txt'
@@ -69,7 +71,7 @@ except FileNotFoundError:
     f.write(ufr.content)
     f.close()
 try:
-    f = open('start.wav')
+    f = open('startup.mp3')
     f.close()
     print('start.wav success!')
 except FileNotFoundError:
@@ -108,6 +110,7 @@ try:
     from datetime import datetime
     from russian import *
     from english import *
+    from update1 import *
 except ModuleNotFoundError:
     import os
     print('ERROR! Downloading/Update/Installing Modules...')
@@ -124,6 +127,7 @@ import math
 import platform
 import keyboard
 import pyglet
+from systemconfstartup import *
 from asciimatics import *
 a = platform.system()
 if platform.system() == 'Windows':
@@ -134,6 +138,18 @@ else:
     cls = 'clear'
     rm = 'rm'
     pera = 'python3 calc.py'
+
+try:
+    f = open('startupconf.txt', 'r')
+    value = f.read()
+    if value == '0':
+        startupsys(0)
+    else:
+        startupsys(1)
+except FileNotFoundError:
+    startupsys(1)
+f.close()
+os.system(rm + 'startupconf.txt')
 try:
     f = open('config.txt')
     f.close()
@@ -151,6 +167,7 @@ else:
     from english import *
 from datetime import date
 from datetime import datetime
+time_end_init = time.time()
 # Загрузка
 current_time = datetime.now().time()
 current_date = str(date.today())
@@ -165,9 +182,13 @@ print(Fore.BLACK)
 os.system(cls)
 print(present)
 print(just)
-print(ny)
-sound = pyglet.media.load("start.wav", streaming=False)
-sound.play()
+def shutdown():
+    sound = pyglet.media.load("shutdown.mp3", streaming=False)
+    sound.play()
+def startup():
+    sound = pyglet.media.load("startup.mp3", streaming=False)
+    sound.play()
+startup()
 done = False
 def animate():
     for c in itertools.cycle(['|', '/', '-', '\\']):
@@ -179,8 +200,10 @@ def animate():
     sys.stdout.write(success)
 t = threading.Thread(target=animate)
 t.start()
-time.sleep(0)
+time.sleep(0.2)
 done = True
+time_end_boot_screen = time.time()
+print(f'Time: {time_end_init - time_start} , {time_end_boot_screen - time_end_init}')
 # Сам калькулятор
 time.sleep(1)
 while i <= 2:
@@ -201,8 +224,7 @@ while i <= 2:
     if what == 'clang':
             f.close()
             os.system(rm + ' config.txt')
-            sound = pyglet.media.load("shutdown.mp3", streaming=False)
-            sound.play()
+            shutdown()
             done = False
             def animate():
                 for c in itertools.cycle(['|', '/', '-', '\\']):
@@ -234,16 +256,19 @@ while i <= 2:
             ufr = requests.get(url + py4)
             f.write(ufr.content)
             f.close()
-        sound = pyglet.media.load("shutdown.mp3", streaming=False)
-        sound.play()
+        shutdown()
         time.sleep(5)
         os.system(cls)
         os.system(pera)
+    elif what == 'cst':
+        calc_u1()
     elif what == 'reboot':
-        sound = pyglet.media.load("shutdown.mp3", streaming=False)
-        sound.play()
+        shutdown()
         time.sleep(5)
-
+        value = '0'
+        f = open('startupconf.txt', 'w')
+        f.write(value)
+        f.close()
         print(Back.BLACK)
         print(Fore.WHITE)
         os.system(cls)
@@ -274,10 +299,13 @@ while i <= 2:
                 break
     #сложение
     elif what == "+":
-        a = float( input(one_number_plus) )
-        b = float( input(two_number_plus) )
-        c = a + b
-        print(answer + str(c))
+        try:
+            a = float( input(one_number_plus) )
+            b = float( input(two_number_plus) )
+            c = a + b
+            print(answer + str(c))
+        except ValueError:
+            print('CALC:VALUE_ERROR:ONLY_NUMBERS')
         d = input(continue_operation)
         if d == "yes":
             i += 0
@@ -298,9 +326,6 @@ while i <= 2:
         print(Fore.WHITE)
         os.system(cls)
         break
-    #часы
-    elif what == "clock":
-        os.system('start clock.py')
     #путь к секрету №1
     elif what == "Зда%64№намбернAпPимерАбсд97":
         done = False
@@ -340,21 +365,24 @@ while i <= 2:
         i += 0
     #Дискриминант
     elif what == "d":
-        print(d1)
-        a = float(input(d_a))
-        b = float(input(d_b))
-        c = float(input(d_c))
-        discr = b ** 2 - 4 * a * c
-        print(d_answer % discr)
-        if discr > 0:
-            x1 = (-b + math.sqrt(discr)) / (2 * a)
-            x2 = (-b - math.sqrt(discr)) / (2 * a)
-            print(d_answer_1 % (x1, x2))
-        elif discr == 0:
-            x = -b / (2 * a)
-            print(d_answer_2 % x)
-        else:
-            print(d_no)
+        try:
+            print(d1)
+            a = float(input(d_a))
+            b = float(input(d_b))
+            c = float(input(d_c))
+            discr = b ** 2 - 4 * a * c
+            print(d_answer % discr)
+            if discr > 0:
+                x1 = (-b + math.sqrt(discr)) / (2 * a)
+                x2 = (-b - math.sqrt(discr)) / (2 * a)
+                print(d_answer_1 % (x1, x2))
+            elif discr == 0:
+                x = -b / (2 * a)
+                print(d_answer_2 % x)
+            else:
+                print(d_no)
+        except ValueError:
+            print('CALC:VALUE_ERROR:ONLY_NUMBERS')
         e = input(continue_operation)
         if e == "yes":
             i += 0
@@ -392,9 +420,12 @@ while i <= 2:
         if fg == "1":
             tu = input(custom_tu)
             if tu == "--":
-                a = float(input(custom_un))
-                a = -a
-                print(custom_un_answer + str(a))
+                try:
+                    a = float(input(custom_un))
+                    a = -a
+                    print(custom_un_answer + str(a))
+                except ValueError:
+                    print('CALC:VALUE_ERROR:ONLY_NUMBERS')
                 d = input(continue_operation)
                 if d == "yes":
                     i += 0
@@ -428,8 +459,11 @@ while i <= 2:
             elif tu == "~":
                 hu = input(custom_hu)
                 if hu == "=":
-                    a = float(input(custom_hu_equals_a))
-                    print(round (a))
+                    try:
+                        a = float(input(custom_hu_equals_a))
+                        print(round (a))
+                    except ValueError:
+                        print('CALC:VALUE_ERROR:ONLY_NUMBERS')
                     d = input(continue_operation)
                     if d == "yes":
                         i += 0
@@ -445,8 +479,11 @@ while i <= 2:
                         os.system(cls)
                         break
                 elif hu == "<":
-                    a = float(input(custom_hu_less_a))
-                    print(math.floor(a))
+                    try:
+                        a = float(input(custom_hu_less_a))
+                        print(math.floor(a))
+                    except ValueError:
+                        print('CALC:VALUE_ERROR:ONLY_NUMBERS')
                     d = input(continue_operation)
                     if d == "yes":
                         i += 0
@@ -462,8 +499,11 @@ while i <= 2:
                         os.system(cls)
                         break
                 elif hu == ">":
-                    a = float(input(custom_hu_more_a))
-                    print(math.ceil(a))
+                    try:
+                        a = float(input(custom_hu_more_a))
+                        print(math.ceil(a))
+                    except ValueError:
+                        print('CALC:VALUE_ERROR:ONLY_NUMBERS')
                     d = input(continue_operation)
                     if d == "yes":
                         i += 0
@@ -497,10 +537,13 @@ while i <= 2:
         elif fg == "2":
             custom2 = input(custom2_what)
             if custom2 == "+":
-                a = float( input(one_number_plus) )
-                b = float( input(two_number_plus) )
-                c = a + b
-                print(answer + str(c))
+                try:
+                    a = float( input(one_number_plus) )
+                    b = float( input(two_number_plus) )
+                    c = a + b
+                    print(answer + str(c))
+                except ValueError:
+                    print('CALC:VALUE_ERROR:ONLY_NUMBERS')
                 d = input(continue_operation)
                 if d == "yes":
                     i += 0
@@ -517,10 +560,13 @@ while i <= 2:
                     break
                     time.sleep(5)
             elif custom2 == "^":
-                a = float( input(degree_a) )
-                b = float( input(degree_b) )
-                c = a ** b
-                print(degree_answer + str(c))
+                try:
+                    a = float( input(degree_a) )
+                    b = float( input(degree_b) )
+                    c = a ** b
+                    print(degree_answer + str(c))
+                except ValueError:
+                    print('CALC:VALUE_ERROR:ONLY_NUMBERS')
                 d = input(continue_operation)
                 if d == "yes":
                     i += 0
@@ -536,45 +582,51 @@ while i <= 2:
                     os.system(cls)
                     break
             elif custom2 == "/":
-                a = float( input(difference_a) )
-                b = float( input(difference_b) )
-                if b != 0:
-                    print(difference_answer % (a/b))
-                    d = input(continue_operation)
-                    if d == "yes":
-                        i += 0
-                    elif d == "y":
-                        i += 0
-                    elif d == "д":
-                        i += 0
-                    elif d == "да":
-                        i += 0
+                try:
+                    a = float( input(difference_a) )
+                    b = float( input(difference_b) )
+                    if b != 0:
+                        print(difference_answer % (a/b))
+                        d = input(continue_operation)
+                        if d == "yes":
+                            i += 0
+                        elif d == "y":
+                            i += 0
+                        elif d == "д":
+                            i += 0
+                        elif d == "да":
+                            i += 0
+                        else:
+                            print(Back.BLACK)
+                            print(Fore.WHITE)
+                            os.system(cls)
+                            break
                     else:
-                        print(Back.BLACK)
-                        print(Fore.WHITE)
-                        os.system(cls)
-                        break
-                else:
-                    print(difference_0_error)
-                    d = input(continue_operation)
-                    if d == "yes":
-                        i += 0
-                    elif d == "y":
-                        i += 0
-                    elif d == "д":
-                        i += 0
-                    elif d == "да":
-                        i += 0
-                    else:
-                        print(Back.BLACK)
-                        print(Fore.WHITE)
-                        os.system(cls)
-                        break
+                        print(difference_0_error)
+                        d = input(continue_operation)
+                        if d == "yes":
+                            i += 0
+                        elif d == "y":
+                            i += 0
+                        elif d == "д":
+                            i += 0
+                        elif d == "да":
+                            i += 0
+                        else:
+                            print(Back.BLACK)
+                            print(Fore.WHITE)
+                            os.system(cls)
+                            break
+                except ValueError:
+                    input('CALC:VALUE_ERROR\nPLEASE_PRESS_ANY_KEY...')
             elif custom2 == "*":
-                a = float( input(multiplication_a) )
-                b = float( input(multiplication_b) )
-                c = a * b
-                print(answer + str(c))
+                try:
+                    a = float( input(multiplication_a) )
+                    b = float( input(multiplication_b) )
+                    c = a * b
+                    print(answer + str(c))
+                except ValueError:
+                    print('CALC:VALUE_ERROR:ONLY_NUMBERS')
                 d = input(continue_operation)
                 if d == "yes":
                     i += 0
@@ -590,10 +642,13 @@ while i <= 2:
                     os.system(cls)
                     break
             elif custom2 == "-":
-                a = float( input(minus_a) )
-                b = float( input(minus_b) )
-                c = a - b
-                print(answer + str(c))
+                try:
+                    a = float( input(minus_a) )
+                    b = float( input(minus_b) )
+                    c = a - b
+                    print(answer + str(c))
+                except ValueError:
+                    print('CALC:VALUE_ERROR:ONLY_NUMBERS')
                 d = input(continue_operation)
                 if d == "yes":
                     i += 0
@@ -612,20 +667,23 @@ while i <= 2:
             custom3 = input(custom3_what)
             if custom3 == "d":
                 print(d1)
-                a = float(input(d_a))
-                b = float(input(d_b))
-                c = float(input(d_c))
-                discr = b ** 2 - 4 * a * c
-                print(d_answer % discr)
-                if discr > 0:
-                    x1 = (-b + math.sqrt(discr)) / (2 * a)
-                    x2 = (-b - math.sqrt(discr)) / (2 * a)
-                    print(d_answer_1 % (x1, x2))
-                elif discr == 0:
-                    x = -b / (2 * a)
-                    print(d_answer_2 % x)
-                else:
-                    print(d_no)
+                try:
+                    a = float(input(d_a))
+                    b = float(input(d_b))
+                    c = float(input(d_c))
+                    discr = b ** 2 - 4 * a * c
+                    print(d_answer % discr)
+                    if discr > 0:
+                        x1 = (-b + math.sqrt(discr)) / (2 * a)
+                        x2 = (-b - math.sqrt(discr)) / (2 * a)
+                        print(d_answer_1 % (x1, x2))
+                    elif discr == 0:
+                        x = -b / (2 * a)
+                        print(d_answer_2 % x)
+                    else:
+                        print(d_no)
+                except ValueError:
+                    print('CALC:VALUE_ERROR:ONLY_NUMBERS')
                 e = input(continue_operation)
                 if e == "yes":
                     i += 0
@@ -640,13 +698,16 @@ while i <= 2:
                     print(Fore.WHITE)
                     os.system(cls)
             elif custom3 == "in %":
-                a = float(input(in_a))
-                b = float(input(in_b))
-                c = float(input(in_c))
-                e = float('100')
-                f = a * e / b
-                h = f * c / e
-                print(answer + str(h))
+                try:
+                    a = float(input(in_a))
+                    b = float(input(in_b))
+                    c = float(input(in_c))
+                    e = float('100')
+                    f = a * e / b
+                    h = f * c / e
+                    print(answer + str(h))
+                except ValueError:
+                    print('CALC:VALUE_ERROR:ONLY_NUMBERS')
                 d = input(continue_operation)
                 if d == "yes":
                     i += 0
@@ -662,11 +723,14 @@ while i <= 2:
                     os.system(cls)
                     break
             elif custom3 == "out of 100%":
-                a = float(100)
-                b = float( input(out_of_b))
-                c = float( input(out_of_c))
-                d = b / a * c
-                print(answer + str(d))
+                try:
+                    a = float(100)
+                    b = float( input(out_of_b))
+                    c = float( input(out_of_c))
+                    d = b / a * c
+                    print(answer + str(d))
+                except ValueError:
+                    print('CALC:VALUE_ERROR:ONLY_NUMBERS')
                 d = input(continue_operation)
                 if d == "yes":
                     i += 0
@@ -683,13 +747,16 @@ while i <= 2:
                     break
     #превращение в %
     elif what == "in %":
-        a = float(input(in_a))
-        b = float(input(in_b))
-        c = float(input(in_c))
-        e = float('100')
-        f = a * e / b
-        h = f * c / e
-        print(answer + str(h))
+        try:
+            a = float(input(in_a))
+            b = float(input(in_b))
+            c = float(input(in_c))
+            e = float('100')
+            f = a * e / b
+            h = f * c / e
+            print(answer + str(h))
+        except ValueError:
+            print('CALC:VALUE_ERROR:ONLY_NUMBERS')
         d = input(continue_operation)
         if d == "yes":
             i += 0
@@ -742,8 +809,11 @@ while i <= 2:
     elif what == "~":
         pipi = input(rounding_what)
         if pipi == "=":
-            a = float(input(rounding_equal_a))
-            print(round (a))
+            try:
+                a = float(input(rounding_equal_a))
+                print(round (a))
+            except ValueError:
+                print('CALC:VALUE_ERROR:ONLY_NUMBERS')
             d = input(continue_operation)
             if d == "yes":
                 i += 0
@@ -759,8 +829,11 @@ while i <= 2:
                 os.system(cls)
                 break
         elif pipi == "<":
-            a = float(input(rounding_less_a))
-            print(math.floor(a))
+            try:
+                a = float(input(rounding_less_a))
+                print(math.floor(a))
+            except ValueError:
+                print('CALC:VALUE_ERROR:ONLY_NUMBERS')
             d = input(continue_operation)
             if d == "yes":
                 i += 0
@@ -776,8 +849,11 @@ while i <= 2:
                 os.system(cls)
                 break
         elif pipi == ">":
-            a = float(input(rounding_more_a))
-            print(math.ceil(a))
+            try:
+                a = float(input(rounding_more_a))
+                print(math.ceil(a))
+            except ValueError:
+                print('CALC:VALUE_ERROR:ONLY_NUMBERS')
             d = input(continue_operation)
             if d == "yes":
                 i += 0
@@ -810,9 +886,12 @@ while i <= 2:
                 break
     #унарный минус
     elif what == "--":
-        a = float( input(un) )
-        a = -a
-        print(un_answer + str(a))
+        try:
+            a = float( input(un) )
+            a = -a
+            print(un_answer + str(a))
+        except ValueError:
+            print('CALC:VALUE_ERROR:ONLY_NUMBERS')
         d = input(continue_operation)
         if d == "yes":
             i += 0
@@ -829,11 +908,14 @@ while i <= 2:
             break
     #когда число это 100% и надо это число превратить в сколько-то процентов
     elif what == "out of 100%":
-        a = float(100)
-        b = float( input(out_of_b))
-        c = float( input(out_of_c))
-        d = b / a * c
-        print(answer + str(d))
+        try:
+            a = float(100)
+            b = float( input(out_of_b))
+            c = float( input(out_of_c))
+            d = b / a * c
+            print(answer + str(d))
+        except ValueError:
+            print('CALC:VALUE_ERROR:ONLY_NUMBERS')
         d = input(continue_operation)
         if d == "yes":
             i += 0
@@ -850,10 +932,13 @@ while i <= 2:
             break
     #в степень
     elif what == "^":
-        a = float( input(degree_a) )
-        b = float( input(degree_b) )
-        c = a ** b
-        print(degree_answer + str(c))
+        try:
+            a = float( input(degree_a) )
+            b = float( input(degree_b) )
+            c = a ** b
+            print(degree_answer + str(c))
+        except ValueError:
+            print('CALC:VALUE_ERROR:ONLY_NUMBERS')
         d = input(continue_operation)
         if d == "yes":
             i += 0
@@ -870,47 +955,52 @@ while i <= 2:
             break
     #деление
     elif what == "/":
-        a = float( input(difference_a) )
-        b = float( input(difference_b) )
-        if b != 0:
-            print(difference_answer % (a/b))
-            d = input(continue_operation)
-            if d == "yes":
-                i += 0
-            elif d == "y":
-                i += 0
-            elif d == "д":
-                i += 0
-            elif d == "да":
-                i += 0
+        try:
+            a = float( input(difference_a) )
+            b = float( input(difference_b) )
+            if b != 0:
+                print(difference_answer % (a/b))
+                d = input(continue_operation)
+                if d == "yes":
+                    i += 0
+                elif d == "y":
+                    i += 0
+                elif d == "д":
+                    i += 0
+                elif d == "да":
+                    i += 0
+                else:
+                    print(Back.BLACK)
+                    print(Fore.WHITE)
+                    os.system(cls)
+                    break
             else:
-                print(Back.BLACK)
-                print(Fore.WHITE)
-                os.system(cls)
-                break
-        else:
-            print(difference_0_error)
-            d = input(continue_operation)
-            if d == "yes":
-                i += 0
-            elif d == "y":
-                i += 0
-            elif d == "д":
-                i += 0
-            elif d == "да":
-                i += 0
-            else:
-                print(Back.BLACK)
-                print(Fore.WHITE)
-                os.system(cls)
-                break
-
+                print(difference_0_error)
+                d = input(continue_operation)
+                if d == "yes":
+                    i += 0
+                elif d == "y":
+                    i += 0
+                elif d == "д":
+                    i += 0
+                elif d == "да":
+                    i += 0
+                else:
+                    print(Back.BLACK)
+                    print(Fore.WHITE)
+                    os.system(cls)
+                    break
+        except ValueError:
+            input('CALC:ERROR:PRESS_ANY_KEY...')
     #умножение
     elif what == "*":
-        a = float( input(multiplication_a) )
-        b = float( input(multiplication_b) )
-        c = a * b
-        print(answer + str(c))
+        try:
+            a = float( input(multiplication_a) )
+            b = float( input(multiplication_b) )
+            c = a * b
+            print(answer + str(c))
+        except ValueError:
+            print('CALC:VALUE_ERROR:ONLY_NUMBERS')
         d = input(continue_operation)
         if d == "yes":
             i += 0
@@ -927,10 +1017,13 @@ while i <= 2:
             break
     #вычитание
     elif what == "-":
-        a = float( input(minus_a) )
-        b = float( input(minus_b) )
-        c = a - b
-        print(answer + str(c))
+        try:
+            a = float( input(minus_a) )
+            b = float( input(minus_b) )
+            c = a - b
+            print(answer + str(c))
+        except ValueError:
+            print('CALC:VALUE_ERROR:ONLY_NUMBERS')
         d = input(continue_operation)
         if d == "yes":
             i += 0
@@ -949,6 +1042,6 @@ while i <= 2:
     else:
         print(error)
         input()
-sound = pyglet.media.load("shutdown.mp3", streaming=False)
-sound.play()
-time.sleep(4)
+shutdown()
+print(end)
+time.sleep(5)
