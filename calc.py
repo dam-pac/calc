@@ -105,6 +105,7 @@ try:
     import platform
     import keyboard
     import pyglet
+    import psutil
     from asciimatics import *
     from datetime import date
     from datetime import datetime
