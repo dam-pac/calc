@@ -15,7 +15,7 @@ f = open('config-url.txt', 'r')
 cfurl = f.read()
 f.close()
 if cfurl == 'default':
-    url = 'https://calc.makkate.ru/'
+    url = 'https://raw.githubusercontent.com/dam-pac/calc/main/'
 else:
     url = configurl
 try:
@@ -36,6 +36,11 @@ py3 = '/startup.mp3'
 py4 = '/calc.py'
 py5 = '/shutdown.mp3'
 py6 = '/requirements.txt'
+py7 = '/systemconfstartup.py'
+py8 = '/start.mp3'
+py9 = '/startup.mp3'
+py10 = '/update1.py'
+py11 = '/update1_russian.py'
 print('Check files...')
 try:
     f = open('requirements.txt')
@@ -49,6 +54,50 @@ except FileNotFoundError:
     f.write(ufr.content)
     f.close()
 try:
+    f = open('start.mp3')
+    f.close()
+    print('start.mp3 success!')
+except FileNotFoundError:
+    print('start.mp3 NOT FOUND! Downloading..')
+    import requests
+    f = open(r'start.mp3',"wb")
+    ufr = requests.get(url + py8)
+    f.write(ufr.content)
+    f.close()
+try:
+    f = open('startup.mp3')
+    f.close()
+    print('startup.mp3 success!')
+except FileNotFoundError:
+    print('startup.mp3 NOT FOUND! Downloading..')
+    import requests
+    f = open(r'startup.mp3',"wb")
+    ufr = requests.get(url + py9)
+    f.write(ufr.content)
+    f.close()
+try:
+    f = open('update1.py')
+    f.close()
+    print('update1.py success!')
+except FileNotFoundError:
+    print('update1.py NOT FOUND! Downloading..')
+    import requests
+    f = open(r'update1.py',"wb")
+    ufr = requests.get(url + py10)
+    f.write(ufr.content)
+    f.close()
+try:
+    f = open('update1_russian.py')
+    f.close()
+    print('update1_russian.py success!')
+except FileNotFoundError:
+    print('update1_russian.py NOT FOUND! Downloading..')
+    import requests
+    f = open(r'update1_russian.py',"wb")
+    ufr = requests.get(url + py11)
+    f.write(ufr.content)
+    f.close()
+try:
     f = open('english.py')
     f.close()
     print('english.py success!')
@@ -57,6 +106,17 @@ except FileNotFoundError:
     import requests
     f = open(r'english.py',"wb")
     ufr = requests.get(url + py1)
+    f.write(ufr.content)
+    f.close()
+try:
+    f = open('systemconfstartup.py')
+    f.close()
+    print('systemconfstartup.py success!')
+except FileNotFoundError:
+    print('systemconfstartup.py NOT FOUND! Downloading..')
+    import requests
+    f = open(r'systemconfstartup.py',"wb")
+    ufr = requests.get(url + py7)
     f.write(ufr.content)
     f.close()
 try:
@@ -105,13 +165,13 @@ try:
     import platform
     import keyboard
     import pyglet
-    import psutil
     from asciimatics import *
     from datetime import date
     from datetime import datetime
     from russian import *
     from english import *
     from update1 import *
+    import psutil
 except ModuleNotFoundError:
     import os
     print('ERROR! Downloading/Update/Installing Modules...')
@@ -130,6 +190,7 @@ import keyboard
 import pyglet
 from systemconfstartup import *
 from asciimatics import *
+import psutil
 a = platform.system()
 if platform.system() == 'Windows':
     cls = 'cls'
